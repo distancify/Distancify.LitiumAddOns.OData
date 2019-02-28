@@ -45,7 +45,7 @@ namespace Distancify.LitiumAddOns.OData
                 var dispatcher = new HttpRoutingDispatcher(_webApiConfig);
                 var server = new HttpServer(_webApiConfig, dispatcher);
                 
-                return _webApiConfig.MapODataServiceRoute("litiumodataservice", "odata", _odataBuilder.GetEdmModel(), new DefaultODataBatchHandler(server));
+                return _webApiConfig.MapODataServiceRoute("litiumodataservice", "odata", _odataBuilder.GetEdmModel());
             }
         }
 

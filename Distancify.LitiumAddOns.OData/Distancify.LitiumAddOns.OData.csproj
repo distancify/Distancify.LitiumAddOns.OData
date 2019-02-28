@@ -390,12 +390,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationExtensionBuilder.cs" />
+    <Compile Include="Litium\ApplicationExtensionBuilder.cs" />
     <Compile Include="Controllers\LitiumODataController.cs" />
     <Compile Include="Controllers\ODataProductsController.cs" />
     <Compile Include="IProductModelBuilder.cs" />
+    <Compile Include="Litium\LanguageMessageHandler.cs" />
+    <Compile Include="MemberConfigurationExpression.cs" />
+    <Compile Include="ODataProductModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HttpConfigurationExtensions.cs" />
+    <Compile Include="Litium\WebApiSetup.cs" />
+    <Compile Include="ReadOnlyFieldFrameworkModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

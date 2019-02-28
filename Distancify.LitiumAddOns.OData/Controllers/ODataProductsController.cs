@@ -40,7 +40,7 @@ namespace Distancify.LitiumAddOns.OData
             {
                 foreach (var v in _variantService.GetByBaseProduct(b.SystemId))
                 {
-                    yield return Builder.Build(b, v);
+                    yield return Builder.Build(new ODataProductModel(b, v));
                 }
             }
         }

@@ -10,7 +10,7 @@ namespace Distancify.LitiumAddOns.OData
     public interface IProductModelBuilder
     {
         Type ModelType { get; }
-        object Build(BaseProduct baseProduct, Variant variant);
+        object Build(ODataProductModel productModel);
 
         object ToTypedList(IEnumerable<object> list);
     }
@@ -20,7 +20,7 @@ namespace Distancify.LitiumAddOns.OData
     {
         public Type ModelType { get { return typeof(T); } }
 
-        public abstract object Build(BaseProduct baseProduct, Variant variant);
+        public abstract object Build(ODataProductModel productModel);
 
         public object AsQueryable(IEnumerable<object> list)
         {
