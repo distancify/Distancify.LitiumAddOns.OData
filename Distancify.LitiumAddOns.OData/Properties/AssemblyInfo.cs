@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Distancify.LitiumAddOns.ExcelConnector")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Distancify.LitiumAddOns.OData")]
+[assembly: AssemblyDescription("Litium Add-on help with building simple read-only OData endpoints for Litium data.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Distancify.LitiumAddOns.ExcelConnector")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyCompany("Distancify AB")]
+[assembly: AssemblyProduct("Distancify.LitiumAddOns.OData")]
+[assembly: AssemblyCopyright("Copyright © Distancify AB 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("293e8f03-93b5-4909-a32c-a671814f0f77")]
+[assembly: Guid("e9b99623-a89b-40b3-82eb-f9a7a0f7c1f2")]
 
 // Version information for an assembly consists of the following four values:
 //

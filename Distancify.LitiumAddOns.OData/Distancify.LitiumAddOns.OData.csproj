@@ -397,9 +397,9 @@
     <Compile Include="Litium\LanguageMessageHandler.cs" />
     <Compile Include="MemberConfigurationExpression.cs" />
     <Compile Include="ODataProductModel.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HttpConfigurationExtensions.cs" />
     <Compile Include="Litium\WebApiSetup.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadOnlyFieldFrameworkModel.cs" />
   </ItemGroup>
   <ItemGroup>
