@@ -3,25 +3,27 @@ using Litium.Data;
 using Litium.Products;
 using Litium.Products.Queryable;
 using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Routing;
 using System.Collections.Generic;
 using System.Web.Http;
 
 namespace Distancify.LitiumAddOns.OData
 {
     [EnableQuery]
-    public class ODataProductsController : LitiumODataController
+    public class ODataPrroductsController : LitiumODataController
     {
         internal static IProductModelBuilder Builder { get; set; }
 
         private readonly DataService _dataService;
         private readonly VariantService _variantService;
 
-        public ODataProductsController(DataService dataService, VariantService variantService)
+        public ODataPrroductsController(DataService dataService, VariantService variantService)
         {
             _dataService = dataService;
             _variantService = variantService;
         }
-        
+
+        [ODataRoute("Products")]
         public IHttpActionResult Get()
         {
             using (var query = _dataService.CreateQuery<BaseProduct>(opt => opt.IncludeVariants()))

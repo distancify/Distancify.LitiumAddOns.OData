@@ -30,7 +30,7 @@ namespace Distancify.LitiumAddOns.OData.Controllers
 
         private MethodInfo GetOkMethodOf(Type type)
         {
-            return typeof(ODataProductsController)
+            return typeof(ODataController)
                 .GetMethods(BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.NonPublic)
                          .First(m => m.Name == nameof(Ok) && m.ContainsGenericParameters)
                          .MakeGenericMethod(type);
