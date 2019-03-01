@@ -390,6 +390,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControllerConvention.cs" />
     <Compile Include="Litium\ApplicationExtensionBuilder.cs" />
     <Compile Include="Controllers\LitiumODataController.cs" />
     <Compile Include="Controllers\ODataProductsController.cs" />

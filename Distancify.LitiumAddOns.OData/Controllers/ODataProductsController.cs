@@ -10,37 +10,41 @@ using System.Web.Http;
 namespace Distancify.LitiumAddOns.OData
 {
     [EnableQuery]
-    public class ODataPrroductsController : LitiumODataController
+    public class ODataProductsController : LitiumODataController
     {
-        internal static IProductModelBuilder Builder { get; set; }
+        internal static IDictionary<string, IProductModelBuilder> Builders = new Dictionary<string, IProductModelBuilder>();
 
         private readonly DataService _dataService;
         private readonly VariantService _variantService;
 
-        public ODataPrroductsController(DataService dataService, VariantService variantService)
+        public ODataProductsController(DataService dataService, VariantService variantService)
         {
             _dataService = dataService;
             _variantService = variantService;
         }
-
-        [ODataRoute("Products")]
+        
         public IHttpActionResult Get()
         {
+            var model = RequestContext.RouteData.Values["ODataModel"] as string;
+
+            if (model == null || !Builders.TryGetValue(model, out var builder))
+                return NotFound();
+
             using (var query = _dataService.CreateQuery<BaseProduct>(opt => opt.IncludeVariants()))
             {
                 var hits = query.ToList();
-                var result = ToListOfType(Map(hits), Builder.ModelType);
-                return Ok(typeof(List<>).MakeGenericType(Builder.ModelType), result);
+                var result = ToListOfType(Map(hits, builder), builder.ModelType);
+                return Ok(typeof(List<>).MakeGenericType(builder.ModelType), result);
             }
         }
         
-        private IEnumerable<object> Map(IEnumerable<BaseProduct> baseProducts)
+        private IEnumerable<object> Map(IEnumerable<BaseProduct> baseProducts, IProductModelBuilder builder)
         {
             foreach (var b in baseProducts)
             {
                 foreach (var v in _variantService.GetByBaseProduct(b.SystemId))
                 {
-                    yield return Builder.Build(new ODataProductModel(b, v));
+                    yield return builder.Build(new ODataProductModel(b, v));
                 }
             }
         }

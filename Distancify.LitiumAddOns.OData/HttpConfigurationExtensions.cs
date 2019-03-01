@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNet.OData.Batch;
-using Microsoft.AspNet.OData.Builder;
+﻿using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNet.OData.Routing;
 using Microsoft.OData.Edm;
@@ -11,6 +10,7 @@ using System;
 using Litium.Owin.InversionOfControl;
 using Distancify.LitiumAddOns.Foundation;
 using Litium.Runtime.DependencyInjection;
+using System.Collections.Generic;
 
 namespace Distancify.LitiumAddOns.OData
 {
@@ -20,6 +20,7 @@ namespace Distancify.LitiumAddOns.OData
         {
             private readonly HttpConfiguration _webApiConfig;
             private readonly ODataConventionModelBuilder _odataBuilder;
+            private readonly ISet<string> _productModels = new HashSet<string>();
 
             internal WebApiConfiguration(HttpConfiguration webApiConfiguration)
             {
@@ -30,22 +31,35 @@ namespace Distancify.LitiumAddOns.OData
                 _odataBuilder.ContainerName = "DefaultContainer";
             }
 
-            public WebApiConfiguration WithProductModelBuilder<TBuilder>(TBuilder builder)
+            /// <summary>
+            /// Registers a product model builder to provide a model for products
+            /// </summary>
+            /// <typeparam name="TBuilder"></typeparam>
+            /// <param name="name">This is the odata endpoint name for this model. You will be able to access this model at /odata/&lt;name&gt</param>
+            /// <param name="builder"></param>
+            /// <returns></returns>
+            public WebApiConfiguration WithProductModel<TBuilder>(string name, TBuilder builder)
                 where TBuilder : IProductModelBuilder
             {
-                ODataPrroductsController.Builder = builder;
+                ODataProductsController.Builders.Add(name, builder);
                 EntityTypeConfiguration entity = _odataBuilder.AddEntityType(builder.ModelType);
-                _odataBuilder.AddEntitySet("Products", entity);
+                _odataBuilder.AddEntitySet(name, entity);
+                _productModels.Add(name);
 
                 return this;
             }
 
             public ODataRoute Create()
             {
-                var dispatcher = new HttpRoutingDispatcher(_webApiConfig);
-                var server = new HttpServer(_webApiConfig, dispatcher);
-                
-                return _webApiConfig.MapODataServiceRoute("litiumodataservice", "odata", _odataBuilder.GetEdmModel());
+                var conventions = ODataRoutingConventions.CreateDefaultWithAttributeRouting("litiumodataservice", _webApiConfig);
+                conventions.Insert(0, new ControllerConvention(_productModels));
+
+                return _webApiConfig.MapODataServiceRoute(
+                    "litiumodataservice",
+                    "odata",
+                    _odataBuilder.GetEdmModel(),
+                    new DefaultODataPathHandler(),
+                    conventions);
             }
         }
 

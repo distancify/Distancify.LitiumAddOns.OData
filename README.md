@@ -85,12 +85,16 @@ namespace Distancify.LitiumAddOns.OData.Sample
         public void SetupWebApi(HttpConfiguration config)
         {
             config.UseLitiumOData()
-                .WithProductModelBuilder(_productBuilder)
+                .WithProductModel("Products", _productBuilder)
                 .Create();
         }
     }
 }
 ```
+
+### Endpoint
+
+Run the solution and you will find your endpoint at /odata.
 
 ## Publishing
 

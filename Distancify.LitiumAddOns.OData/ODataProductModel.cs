@@ -1,12 +1,6 @@
 ﻿using JetBrains.Annotations;
-using Litium.FieldFramework;
-using Litium.FieldFramework.FieldTypes;
 using Litium.Products;
-using Litium.Web.Models;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 
 namespace Distancify.LitiumAddOns.OData
 {
@@ -23,18 +17,26 @@ namespace Distancify.LitiumAddOns.OData
 
         public override T GetValue<T>(string fieldName)
         {
-            if (!TryGetValue(fieldName, out object value))
+            if (!TryGetValue(fieldName, out object value, CultureInfo.CurrentUICulture))
                 return default(T);
 
             return (T)value;
         }
 
-        private bool TryGetValue([NotNull] string id, out object value)
+        public override T GetValue<T>(string fieldName, CultureInfo culture)
         {
-            value = Variant.Fields[id, CultureInfo.CurrentUICulture] ?? Variant.Fields[id];
+            if (!TryGetValue(fieldName, out object value, culture))
+                return default(T);
+
+            return (T)value;
+        }
+
+        private bool TryGetValue([NotNull] string id, out object value, CultureInfo culture)
+        {
+            value = Variant.Fields[id, culture] ?? Variant.Fields[id];
             if (value == null)
             {
-                value = BaseProduct.Fields[id, CultureInfo.CurrentUICulture] ?? BaseProduct.Fields[id];
+                value = BaseProduct.Fields[id, culture] ?? BaseProduct.Fields[id];
             }
             return value != null;
         }
