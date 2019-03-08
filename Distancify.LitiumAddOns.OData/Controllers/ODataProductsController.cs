@@ -5,6 +5,7 @@ using Litium.Products.Queryable;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Routing;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 
 namespace Distancify.LitiumAddOns.OData
@@ -40,13 +41,10 @@ namespace Distancify.LitiumAddOns.OData
         
         private IEnumerable<object> Map(IEnumerable<BaseProduct> baseProducts, IProductModelBuilder builder)
         {
-            foreach (var b in baseProducts)
-            {
-                foreach (var v in _variantService.GetByBaseProduct(b.SystemId))
-                {
-                    yield return builder.Build(new ODataProductModel(b, v));
-                }
-            }
+            return baseProducts
+                .SelectMany(b => _variantService.GetByBaseProduct(b.SystemId)
+                    .Select(v => builder.Build(new ODataProductModel(b, v)))
+                    .Where(r => r != null));
         }
     }
 }

@@ -75,17 +75,10 @@ namespace Distancify.LitiumAddOns.OData.Sample
 {
     public class ODataConfig : IWebApiSetup
     {
-        private readonly ODataProductBuilder _productBuilder;
-
-        public ODataConfig(ODataProductBuilder productBuilder)
-        {
-            _productBuilder = productBuilder;
-        }
-
         public void SetupWebApi(HttpConfiguration config)
         {
             config.UseLitiumOData()
-                .WithProductModel("Products", _productBuilder)
+                .WithProductModel("Products", new ODataProductBuilder())
                 .Create();
         }
     }
@@ -95,6 +88,22 @@ namespace Distancify.LitiumAddOns.OData.Sample
 ### Endpoint
 
 Run the solution and you will find your endpoint at /odata.
+
+## Using
+
+### Filtering products
+
+A model builder may return `null` as a way of filtering the results. Here's an example of how to only return products which are published in at least on channel:
+
+```csharp
+public override object Build(ODataProductModel product)
+{
+    if (!product.Variant.ChannelLinks.Any())
+        return null;
+
+    ...
+}
+```
 
 ## Publishing
 
