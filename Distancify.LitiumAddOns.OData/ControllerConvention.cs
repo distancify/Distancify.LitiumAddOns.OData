@@ -20,6 +20,8 @@ namespace Distancify.LitiumAddOns.OData
 
         public string SelectAction(ODataPath odataPath, HttpControllerContext controllerContext, ILookup<string, HttpActionDescriptor> actionMap)
         {
+            if (odataPath.NavigationSource == null)
+                return null;
             if (_productModels.Contains(odataPath.NavigationSource.Name))
             {
                 controllerContext.RouteData.Values.Add("ODataModel", odataPath.NavigationSource.Name);
@@ -30,6 +32,8 @@ namespace Distancify.LitiumAddOns.OData
 
         public string SelectController(ODataPath odataPath, HttpRequestMessage request)
         {
+            if (odataPath.NavigationSource == null)
+                return "Metadata";
             if (_productModels.Contains(odataPath.NavigationSource.Name))
             {
                 return "ODataProducts";
