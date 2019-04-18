@@ -46,7 +46,7 @@ namespace Distancify.LitiumAddOns.OData
                 }
                 else if (typeof(T) != value.GetType())
                 {
-                    return Convert.ChangeType(value, typeof(T));
+                    return (T)Convert.ChangeType(value, typeof(T));
                 }
 
                 return (T)value;
