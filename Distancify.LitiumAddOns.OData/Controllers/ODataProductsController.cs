@@ -15,13 +15,15 @@ namespace Distancify.LitiumAddOns.OData
     {
         internal static IDictionary<string, IProductModelBuilder> Builders = new Dictionary<string, IProductModelBuilder>();
 
-        private readonly DataService _dataService;
-        private readonly VariantService _variantService;
+        private readonly DataService dataService;
+        private readonly VariantService variantService;
+        private readonly PriceListService priceListService;
 
-        public ODataProductsController(DataService dataService, VariantService variantService)
+        public ODataProductsController(DataService dataService, VariantService variantService, PriceListService priceListService)
         {
-            _dataService = dataService;
-            _variantService = variantService;
+            this.dataService = dataService;
+            this.variantService = variantService;
+            this.priceListService = priceListService;
         }
         
         public IHttpActionResult Get()
@@ -31,7 +33,7 @@ namespace Distancify.LitiumAddOns.OData
             if (model == null || !Builders.TryGetValue(model, out var builder))
                 return NotFound();
 
-            using (var query = _dataService.CreateQuery<BaseProduct>(opt => opt.IncludeVariants()))
+            using (var query = dataService.CreateQuery<BaseProduct>(opt => opt.IncludeVariants()))
             {
                 var hits = query.ToList();
                 var result = ToListOfType(Map(hits, builder), builder.ModelType);
@@ -42,9 +44,16 @@ namespace Distancify.LitiumAddOns.OData
         private IEnumerable<object> Map(IEnumerable<BaseProduct> baseProducts, IProductModelBuilder builder)
         {
             return baseProducts
-                .SelectMany(b => _variantService.GetByBaseProduct(b.SystemId)
-                    .Select(v => builder.Build(new ODataProductModel(b, v)))
+                .SelectMany(baseProduct => variantService.GetByBaseProduct(baseProduct.SystemId)
+                    .Select(variant => MapVariant(baseProduct, variant))
+                    .Select(r => builder.Build(r))
                     .Where(r => r != null));
+        }
+
+        private ODataProductModel MapVariant(BaseProduct baseProduct, Variant variant)
+        {
+            var prices = variant.Prices.ToDictionary(r => priceListService.Get(r.PriceListSystemId).Id, r => r.Price);
+            return new ODataProductModel(baseProduct, variant, prices);
         }
     }
 }

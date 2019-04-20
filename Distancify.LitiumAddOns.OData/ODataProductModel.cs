@@ -4,15 +4,19 @@ using Litium.Products;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace Distancify.LitiumAddOns.OData
 {
     public class ODataProductModel : ReadOnlyFieldFrameworkModel
     {
-        public ODataProductModel(BaseProduct baseProduct, Variant variant)
+        private readonly IDictionary<string, decimal> prices;
+
+        public ODataProductModel(BaseProduct baseProduct, Variant variant, IDictionary<string, decimal> prices)
         {
             BaseProduct = baseProduct;
             Variant = variant;
+            this.prices = prices;
         }
 
         public BaseProduct BaseProduct { get; }
@@ -21,7 +25,7 @@ namespace Distancify.LitiumAddOns.OData
         public override T GetValue<T>(string fieldName)
         {
             if (!TryGetValue(fieldName, out object value, CultureInfo.CurrentUICulture))
-                return default(T);
+                return default;
 
             return ToType<T>(value);
         }
@@ -29,14 +33,27 @@ namespace Distancify.LitiumAddOns.OData
         public override T GetValue<T>(string fieldName, CultureInfo culture)
         {
             if (!TryGetValue(fieldName, out object value, culture))
-                return default(T);
+                return default;
 
             return ToType<T>(value);
         }
 
+        public decimal? GetPrice(string listId)
+        {
+            if (prices.TryGetValue(listId, out decimal price))
+                return price;
+
+            return null;
+        }
+
         private T ToType<T>(object value)
         {
-            if (value == null) return default(T);
+            if (value == null) return default;
+
+            if (value is T v)
+            {
+                return v;
+            }
 
             try
             {
@@ -44,12 +61,8 @@ namespace Distancify.LitiumAddOns.OData
                 {
                     return (T)(object)string.Join(",", values);
                 }
-                else if (typeof(T) != value.GetType())
-                {
-                    return (T)Convert.ChangeType(value, typeof(T));
-                }
 
-                return (T)value;
+                return (T)Convert.ChangeType(value, typeof(T));
             }
             catch (Exception ex)
             {
