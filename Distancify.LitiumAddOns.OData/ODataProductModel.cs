@@ -25,7 +25,7 @@ namespace Distancify.LitiumAddOns.OData
         public override T GetValue<T>(string fieldName)
         {
             if (!TryGetValue(fieldName, out object value, CultureInfo.CurrentUICulture))
-                return default;
+                return default(T);
 
             return ToType<T>(value);
         }
@@ -33,7 +33,7 @@ namespace Distancify.LitiumAddOns.OData
         public override T GetValue<T>(string fieldName, CultureInfo culture)
         {
             if (!TryGetValue(fieldName, out object value, culture))
-                return default;
+                return default(T);
 
             return ToType<T>(value);
         }
@@ -48,7 +48,7 @@ namespace Distancify.LitiumAddOns.OData
 
         private T ToType<T>(object value)
         {
-            if (value == null) return default;
+            if (value == null) return default(T);
 
             if (value is T v)
             {
