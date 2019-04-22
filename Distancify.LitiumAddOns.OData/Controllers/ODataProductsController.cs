@@ -1,15 +1,17 @@
 ﻿using Distancify.LitiumAddOns.OData.Controllers;
+using Distancify.LitiumAddOns.OData.Security;
 using Litium.Data;
 using Litium.Products;
 using Litium.Products.Queryable;
 using Microsoft.AspNet.OData;
-using Microsoft.AspNet.OData.Routing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
 namespace Distancify.LitiumAddOns.OData
 {
+    [BasicAuthentication]
+    [NeedsProductsContentAccess]
     [EnableQuery]
     public class ODataProductsController : LitiumODataController
     {
