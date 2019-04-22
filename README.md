@@ -85,9 +85,11 @@ namespace Distancify.LitiumAddOns.OData.Sample
 }
 ```
 
-### Endpoint
+### Endpoint and Authentication
 
 Run the solution and you will find your endpoint at /odata.
+
+Use Basic authentication to authorize yourself using a Litium user. The user must have permission to access products content.
 
 ## Using
 
