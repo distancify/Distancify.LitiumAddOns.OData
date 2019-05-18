@@ -21,9 +21,20 @@ namespace Distancify.LitiumAddOns.OData.Security
             {
                 var token = actionContext.Request.Headers.Authorization.Parameter;
                 var decoded = Encoding.UTF8.GetString(Convert.FromBase64String(token));
-                var parts = decoded.Split(':');
-                var username = parts[0];
-                var password = parts[1];
+                var splitIndex = decoded.IndexOf(':');
+                if (splitIndex == -1)
+                {
+                    Unauthorized(actionContext);
+                    return;
+                }
+                var username = decoded.Substring(0, splitIndex);
+                var password = decoded.Substring(splitIndex + 1);
+
+                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+                {
+                    Unauthorized(actionContext);
+                    return;
+                }
 
                 // PasswordSignIn() will set the principal of the current request
                 var result = IoC.Resolve<AuthenticationService>().PasswordSignIn(username, password);
