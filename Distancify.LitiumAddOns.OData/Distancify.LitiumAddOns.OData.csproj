@@ -390,6 +390,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoMapperExtensions\PriceMappings.cs" />
     <Compile Include="Security\BasicAuthenticationAttribute.cs" />
     <Compile Include="ControllerConvention.cs" />
     <Compile Include="Litium\ApplicationExtensionBuilder.cs" />
@@ -397,13 +398,14 @@
     <Compile Include="Controllers\ODataProductsController.cs" />
     <Compile Include="IProductModelBuilder.cs" />
     <Compile Include="Litium\LanguageMessageHandler.cs" />
-    <Compile Include="MemberConfigurationExpression.cs" />
+    <Compile Include="AutoMapperExtensions\GenericFieldMappings.cs" />
     <Compile Include="ODataProductModel.cs" />
     <Compile Include="HttpConfigurationExtensions.cs" />
     <Compile Include="Litium\WebApiSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadOnlyFieldFrameworkModel.cs" />
     <Compile Include="Security\NeedsProductsContentAccessAttribute.cs" />
+    <Compile Include="AutoMapperExtensions\TextOptionMappings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
