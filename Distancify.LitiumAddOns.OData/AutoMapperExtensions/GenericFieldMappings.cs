@@ -10,7 +10,7 @@ namespace Distancify.LitiumAddOns.OData.AutoMapperExtensions
             string fieldId)
             where TSource : ODataProductModel
         {
-            config.MapFrom(model => model.GetValue<TMember>(fieldId));
+            config.MapFrom((model, destination, member, context) => model.GetValue<TMember>(fieldId, context.GetMappingCulture()));
         }
 
         public static void MapFromField<TSource, TDestination, TMember>(

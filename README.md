@@ -59,7 +59,7 @@ namespace Distancify.LitiumAddOns.OData.Sample
     {
         public override object Build(ODataProductModel product)
         {
-            return product.MapTo<ODataProduct>();
+            return product.MapWithCultureTo<ODataProduct>("sv-SE");
         }
     }
 }

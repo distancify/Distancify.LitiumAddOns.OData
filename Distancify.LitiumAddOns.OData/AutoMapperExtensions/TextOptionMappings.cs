@@ -21,13 +21,22 @@ namespace Distancify.LitiumAddOns.OData.AutoMapperExtensions
             config.MapFromTextOptionLabel(fieldId, culture.ToString());
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <typeparam name="TMember"></typeparam>
+        /// <param name="config"></param>
+        /// <param name="fieldId"></param>
+        /// <param name="culture">If null, will take culture from the mapping context (i.e use together with .MapWithCultureTo(...)</param>
         public static void MapFromTextOptionLabel<TSource, TDestination, TMember>(
         this IMemberConfigurationExpression<TSource, TDestination, TMember> config,
         string fieldId,
-        string culture)
+        string culture = null)
         where TSource : ODataProductModel
         {
-            Func<ODataProductModel, string> mapping = model =>
+            Func<ODataProductModel, TDestination, TMember, ResolutionContext, string> mapping = (model, destination, member, context) =>
             {
                 var field = IoC.Resolve<FieldDefinitionService>().Get<ProductArea>(fieldId);
                 var options = field.Option as TextOption;
@@ -41,18 +50,18 @@ namespace Distancify.LitiumAddOns.OData.AutoMapperExtensions
                 {
                     foreach (var i in values)
                     {
-                        AddLabel(options, i, culture, result);
+                        AddLabel(options, i, culture ?? context.GetMappingCulture(), result);
                     }
                 }
                 else
                 {
-                    AddLabel(options, (string)value, culture, result);
+                    AddLabel(options, (string)value, culture ?? context.GetMappingCulture(), result);
                 }
 
                 return string.Join(",", result);
             };
     
-            config.MapFrom(model => mapping(model));
+            config.MapFrom(mapping);
         }
 
         private static void AddLabel(TextOption options, string key, string culture, IList<string> result)

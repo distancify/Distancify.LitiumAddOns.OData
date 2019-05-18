@@ -391,6 +391,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoMapperExtensions\PriceMappings.cs" />
+    <Compile Include="AutoMapperExtensions\Extensions.cs" />
     <Compile Include="Security\BasicAuthenticationAttribute.cs" />
     <Compile Include="ControllerConvention.cs" />
     <Compile Include="Litium\ApplicationExtensionBuilder.cs" />
