@@ -410,6 +410,7 @@
     <Compile Include="AutoMapperExtensions\TextOptionMappings.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Distancify.LitiumAddOns.OData.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

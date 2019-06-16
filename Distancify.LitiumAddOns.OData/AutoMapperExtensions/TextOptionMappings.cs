@@ -39,6 +39,8 @@ namespace Distancify.LitiumAddOns.OData.AutoMapperExtensions
             Func<ODataProductModel, TDestination, TMember, ResolutionContext, string> mapping = (model, destination, member, context) =>
             {
                 var field = IoC.Resolve<FieldDefinitionService>().Get<ProductArea>(fieldId);
+                if (field == null)
+                    return null;
                 var options = field.Option as TextOption;
                 if (options == null)
                     return null;
@@ -53,7 +55,7 @@ namespace Distancify.LitiumAddOns.OData.AutoMapperExtensions
                         AddLabel(options, i, culture ?? context.GetMappingCulture(), result);
                     }
                 }
-                else
+                else if (value != null)
                 {
                     AddLabel(options, (string)value, culture ?? context.GetMappingCulture(), result);
                 }
