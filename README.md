@@ -4,7 +4,12 @@
 
 Litium Add-on help with building simple read-only OData endpoints for Litium data.
 
-Requires Litium 7.
+## Litium Compatibility Chart
+
+| AddOn Version | Litium Version |
+|---------------|----------------|
+| 0.8           | >=7.2.3        |
+| 0.1-0.7       | 7.1            |
 
 ## Getting Started
 

@@ -20,7 +20,6 @@ namespace Distancify.LitiumAddOns.OData
             services.Remove(context);
 
             var current = (ApplicationPluginContext)context.ImplementationInstance;
-            var replace = new ApplicationPluginContext();
             var assemblies = current.Assemblies.Concat(new[]
             {
                 typeof(DefaultODataBatchHandler).Assembly
@@ -29,11 +28,9 @@ namespace Distancify.LitiumAddOns.OData
             var types = current.Types.Concat(typeof(DefaultODataBatchHandler).Assembly.GetTypes()).ToList().AsReadOnly();
             var instancableTypes = types.GetTypes(x => !x.GetTypeInfo().IsAbstract).ToList().AsReadOnly();
 
-            typeof(ApplicationPluginContext).GetProperty(nameof(ApplicationPluginContext.Assemblies)).SetValue(replace, assemblies);
-            typeof(ApplicationPluginContext).GetProperty(nameof(ApplicationPluginContext.InstancableTypes)).SetValue(replace, instancableTypes);
-            typeof(ApplicationPluginContext).GetProperty(nameof(ApplicationPluginContext.Types)).SetValue(replace, types);
+            var newContext = new ApplicationPluginContextImpl(assemblies, instancableTypes, types);
 
-            services.AddSingleton(replace);
+            services.AddSingleton(newContext);
         }
 
         public void Configure(ApplicationOptionsBuilder optionsBuilder)
