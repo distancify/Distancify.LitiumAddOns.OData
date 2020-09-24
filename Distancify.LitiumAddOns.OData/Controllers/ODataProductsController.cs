@@ -54,6 +54,7 @@ namespace Distancify.LitiumAddOns.OData
                     .Select(variant => MapVariant(baseProduct, variant))
                     .Select(r => builder.Build(r))
                     .Where(r => r != null));
+
         }
 
         private ODataProductModel MapVariant(BaseProduct baseProduct, Variant variant)
