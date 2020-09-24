@@ -19,12 +19,16 @@ namespace Distancify.LitiumAddOns.OData
 
         private readonly DataService dataService;
         private readonly VariantService variantService;
+        private readonly PriceListItemService priceListItemService;
         private readonly PriceListService priceListService;
 
-        public ODataProductsController(DataService dataService, VariantService variantService, PriceListService priceListService)
+        public ODataProductsController(DataService dataService, VariantService variantService, 
+            PriceListItemService priceListItemService,
+            PriceListService priceListService)
         {
             this.dataService = dataService;
             this.variantService = variantService;
+            this.priceListItemService = priceListItemService;
             this.priceListService = priceListService;
         }
         
@@ -54,7 +58,7 @@ namespace Distancify.LitiumAddOns.OData
 
         private ODataProductModel MapVariant(BaseProduct baseProduct, Variant variant)
         {
-            var prices = variant.Prices.ToDictionary(r => priceListService.Get(r.PriceListSystemId).Id, r => r.Price);
+            var prices = priceListItemService.GetByVariant(variant.SystemId).ToDictionary(p => priceListService.Get(p.PriceListSystemId).Id, r => r.Price);
             return new ODataProductModel(baseProduct, variant, prices);
         }
     }
