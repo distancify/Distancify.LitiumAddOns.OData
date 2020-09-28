@@ -10,6 +10,7 @@ trigger:
   branches:
     include:
     - master
+    - features/*
 
 pool:
   vmImage: 'windows-latest'
