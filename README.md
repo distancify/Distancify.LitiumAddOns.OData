@@ -1,7 +1,5 @@
 # Distancify.LitiumAddOns.OData
 
-[![Build status](https://ci.appveyor.com/api/projects/status/mfo6xvkj9k9hjx0h?svg=true)](https://ci.appveyor.com/project/DistancifyAB/distancify-litiumaddons-odata)
-
 Litium Add-on help with building simple read-only OData endpoints for Litium data.
 
 Requires Litium 7.
