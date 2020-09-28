@@ -74,4 +74,5 @@ steps:
   inputs:
     command: push
     nuGetFeedType: external
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
     publishFeedCredentials: nuget.org/distancify
