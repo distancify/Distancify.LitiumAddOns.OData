@@ -109,7 +109,7 @@ public override object Build(ODataProductModel product)
 
 ## Publishing
 
-The project is built on AppVeyor and set up to automatically push any release branch to NuGet.org. To create a new release, create a new branch using the following convention: `release/v<Major>.<Minor>`. AppVeyor will automatically append the build number.
+Use CreateRelease.ps1 to create a new release. There's a CI build from every __master__ build on Distancify's internal NuGet feed.
 
 ## Running the tests
 
