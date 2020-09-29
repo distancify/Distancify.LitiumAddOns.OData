@@ -54,11 +54,13 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: NuGetCommand@2
-  displayName: 'NuGet pack'
+- task: DotNetCoreCLI@2
+  displayName: 'Create NuGet package'
   inputs:
-    command: pack
-    packagesToPack: '**/Distancify.LitiumAddons.OData.csproj'
+    command: 'pack'
+    packagesToPack: '**/Distancify.LitiumAddOns.OData.csproj'
+    nobuild: true
+    versioningScheme: 'off'
 
 - task: NuGetCommand@2
   displayName: 'Push to internal NuGet feed'
